@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Faker Generation: fullSample 1`] = `
+"import { faker } from '@faker-js/faker';
+import * as prisma from '@prisma/client';
+import { Prisma } from '@prisma/client';
+import { Decimal } from '@prisma/client/runtime';
+
+export default class prisma_faker {
+
+  static readonly User_faker_db = (partial_User?: Partial<Prisma.UserCreateInput>): Prisma.UserCreateInput => ({
+    email: faker.datatype.string(),
+    ...partial_User,
+  });
+
+  static readonly Post_faker_db = (partial_Post?: Partial<Prisma.PostCreateInput>): Prisma.PostCreateInput => ({
+    updatedAt: faker.datatype.datetime(),
+    title: faker.datatype.string(),
+    ...partial_Post,
+  });
+
+  static readonly db = {
+    User: prisma_faker.User_faker_db,
+    Post: prisma_faker.Post_faker_db,
+  };
+
+  static readonly User_faker = (partial_User?: Partial<prisma.User>): prisma.User => ({
+    id: faker.datatype.number(),
+    createdAt: faker.datatype.datetime(),
+    email: faker.datatype.string(),
+    name: faker.datatype.string(),
+    ...partial_User,
+  });
+
+  static readonly Post_faker = (partial_Post?: Partial<prisma.Post>): prisma.Post => ({
+    id: faker.datatype.number(),
+    createdAt: faker.datatype.datetime(),
+    updatedAt: faker.datatype.datetime(),
+    published: faker.datatype.boolean(),
+    title: faker.datatype.string(),
+    authorId: faker.datatype.number(),
+    ...partial_Post,
+  });
+
+  static readonly typescript = {
+    User: prisma_faker.User_faker,
+    Post: prisma_faker.Post_faker,
+  };
+
+}"
+`;
