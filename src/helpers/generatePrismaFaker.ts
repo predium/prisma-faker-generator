@@ -34,6 +34,7 @@ class PrismaFakerGenerator {
     DateTime: 'faker.datatype.datetime()',
     Decimal: 'new Decimal(faker.datatype.number())',
     Boolean: 'faker.datatype.boolean()',
+    Json: 'null',
   };
 
   constructor(models: DMMF.Model[]) {
