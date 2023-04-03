@@ -32,7 +32,7 @@ class PrismaFakerGenerator {
     Float: 'faker.datatype.float()',
     String: 'faker.datatype.string()',
     DateTime: 'faker.datatype.datetime()',
-    Decimal: 'new Decimal(faker.datatype.number())',
+    Decimal: 'new Prisma.Decimal(faker.datatype.number())',
     Boolean: 'faker.datatype.boolean()',
     Json: 'null',
   };
@@ -48,7 +48,6 @@ class PrismaFakerGenerator {
   readonly header = `import { faker } from '@faker-js/faker';
 import * as prisma from '@prisma/client';
 import { Prisma } from '@prisma/client';
-import { Decimal } from '@prisma/client/runtime';
 
 export default class prisma_faker {`;
 
