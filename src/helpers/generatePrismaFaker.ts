@@ -27,7 +27,7 @@ class PrismaFakerGenerator {
   models: Model[];
 
   readonly scalarMap: Record<string, string> = {
-    Int: 'faker.number.int()',
+    Int: 'faker.number.int({ max: 1000 })',
     BigInt: 'faker.number.bigInt()',
     Float: 'faker.number.float()',
     String: 'faker.string.sample()',
