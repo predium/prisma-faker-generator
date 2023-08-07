@@ -27,12 +27,12 @@ class PrismaFakerGenerator {
   models: Model[];
 
   readonly scalarMap: Record<string, string> = {
-    Int: 'faker.datatype.number()',
-    BigInt: 'faker.datatype.bigInt()',
-    Float: 'faker.datatype.float()',
-    String: 'faker.datatype.string()',
-    DateTime: 'faker.datatype.datetime()',
-    Decimal: 'new Prisma.Decimal(faker.datatype.number())',
+    Int: 'faker.number.int()',
+    BigInt: 'faker.number.bigInt()',
+    Float: 'faker.number.float()',
+    String: 'faker.string.sample()',
+    DateTime: 'faker.date.anytime ()',
+    Decimal: 'new Prisma.Decimal(faker.number.float())',
     Boolean: 'faker.datatype.boolean()',
     Json: 'null',
   };
