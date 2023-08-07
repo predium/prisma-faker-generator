@@ -13,7 +13,7 @@ class Model {
 class PrismaFakerGenerator {
     constructor(models) {
         this.scalarMap = {
-            Int: 'faker.number.int()',
+            Int: 'faker.number.int({ max: 1000 })',
             BigInt: 'faker.number.bigInt()',
             Float: 'faker.number.float()',
             String: 'faker.string.sample()',
