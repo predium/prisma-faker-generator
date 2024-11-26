@@ -4,4 +4,5 @@ module.exports = {
   testEnvironment: 'node',
   testPathIgnorePatterns: ['/node_modules/', '/dist/'],
   modulePathIgnorePatterns: ['__helpers__/', '__fixtures__/'],
-}
+  prettierPath: require.resolve('prettier-2'),
+};
