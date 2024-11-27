@@ -1,5 +1,5 @@
 {
-  "name": "prisma-faker-generator",
+  "name": "@predium/prisma-faker-generator",
   "description": "Generate a faker objects from prisma schema",
   "version": "1.0.0",
   "main": "dist/generator.js",
@@ -14,7 +14,7 @@
     "start": "node dist/bin.js",
     "dev": "npx tsc -w",
     "build": "npx tsc",
-    "prepack": "yarn build",
+    "prepack": "npm run build",
     "test": "jest"
   },
   "dependencies": {
