@@ -35,6 +35,7 @@ class PrismaFakerGenerator {
     Decimal: 'new Prisma.Decimal(faker.number.float())',
     Boolean: 'faker.datatype.boolean()',
     Json: '{}',
+    Bytes: 'Buffer.from(faker.string.sample())'
   };
 
   constructor(models: readonly DMMF.Model[], private mapper: { regex: string; faker: string }[] = []) {
