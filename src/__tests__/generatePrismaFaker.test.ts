@@ -14,6 +14,7 @@ model User {
   createdAt DateTime @default(now())
   email     String   @unique
   name      String?
+  hashedPassword Bytes?
   posts     Post[]
 }
 

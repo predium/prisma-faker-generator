@@ -117,6 +117,7 @@ export default class prisma_faker {
     createdAt: faker.date.anytime(),
     email: faker.string.sample(),
     name: faker.string.sample(),
+    hashedPassword: Buffer.from(faker.string.sample()),
     ...partial_User,
   });
 
