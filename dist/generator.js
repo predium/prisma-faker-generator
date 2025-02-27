@@ -32,6 +32,7 @@ const internals_1 = require("@prisma/internals");
 const path_1 = __importDefault(require("path"));
 const constants_1 = require("./constants");
 const generatePrismaFaker_1 = require("./helpers/generatePrismaFaker");
+const generatorUtils_1 = require("./helpers/generatorUtils");
 const { version } = require('../package.json');
 (0, generator_helper_1.generatorHandler)({
     onManifest() {
@@ -44,7 +45,7 @@ const { version } = require('../package.json');
     },
     onGenerate: async (options) => {
         var _a;
-        const faker = (0, generatePrismaFaker_1.generatePrismaFaker)(options.dmmf.datamodel.models);
+        const faker = (0, generatePrismaFaker_1.generatePrismaFaker)(options.dmmf.datamodel.models, (0, generatorUtils_1.getMapperOptions)(options.generator.config));
         const writeLocation = path_1.default.join((_a = options.generator.output) === null || _a === void 0 ? void 0 : _a.value, 'faker.ts');
         await fs.promises.mkdir(path_1.default.dirname(writeLocation), {
             recursive: true,

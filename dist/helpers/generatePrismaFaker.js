@@ -11,16 +11,18 @@ class Model {
     }
 }
 class PrismaFakerGenerator {
-    constructor(models) {
+    constructor(models, mapper = []) {
+        this.mapper = mapper;
         this.scalarMap = {
             Int: 'faker.number.int({ max: 1000 })',
             BigInt: 'faker.number.bigInt()',
             Float: 'faker.number.float()',
             String: 'faker.string.sample()',
-            DateTime: 'faker.date.anytime ()',
+            DateTime: 'faker.date.anytime()',
             Decimal: 'new Prisma.Decimal(faker.number.float())',
             Boolean: 'faker.datatype.boolean()',
             Json: '{}',
+            Bytes: 'Buffer.from(faker.string.sample())'
         };
         this.header = `import { faker } from '@faker-js/faker';
 import * as prisma from '@prisma/client';
@@ -38,14 +40,19 @@ export default class prisma_faker {`;
 
 ${this.generateTypescriptFaker()}`;
     }
-    generateScalarFaker(field) {
+    generateScalarFaker(modelName, field) {
         if (field.isList) {
             return '[]';
         }
+        const fieldName = `${modelName}.${field.name}`;
+        const fieldMapper = this.mapper.find((m) => new RegExp(m.regex).test(fieldName));
+        if (fieldMapper) {
+            return fieldMapper.faker;
+        }
         return `${this.scalarMap[field.type]}`;
     }
-    generateScalarFieldFaker(field) {
-        return `    ${field.name}: ${this.generateScalarFaker(field)},`;
+    generateScalarFieldFaker(modelName, field) {
+        return `    ${field.name}: ${this.generateScalarFaker(modelName, field)},`;
     }
     generateTypescriptFaker() {
         const typescriptModelFakers = this.models.map((model) => this.generateTypescriptModelFaker(model)).join('\n\n');
@@ -58,7 +65,7 @@ ${fakersExport.join('\n')}
     }
     generateTypescriptModelFaker(model) {
         const signature = `  static readonly ${model.name}_faker = (partial_${model.name}?: Partial<prisma.${model.name}>): prisma.${model.name} => ({`;
-        const fields = model.scalars.map((field) => this.generateScalarFieldFaker(field));
+        const fields = model.scalars.map((field) => this.generateScalarFieldFaker(model.name, field));
         const footer = `    ...partial_${model.name},
   });`;
         return [signature, ...fields, footer].join('\n');
@@ -74,15 +81,15 @@ ${fakersExport.join('\n')}
     }
     generateDatabaseModelFaker(model) {
         const signature = `  static readonly ${model.name}_faker_db = (partial_${model.name}?: Partial<Prisma.${model.name}CreateInput>): Prisma.${model.name}CreateInput => ({`;
-        const requiredScalars = model.scalarsRequiredForCreation.map((field) => this.generateScalarFieldFaker(field));
+        const requiredScalars = model.scalarsRequiredForCreation.map((field) => this.generateScalarFieldFaker(model.name, field));
         const requiredObjects = model.objectsRequiredForCreation.map((field) => `    ${field.name}: { create: prisma_faker.${field.type}_faker_db()},`);
         const footer = `    ...partial_${model.name},
   });`;
         return [signature, ...requiredObjects, ...requiredScalars, footer].join(`\n`);
     }
 }
-function generatePrismaFaker(models) {
-    const generator = new PrismaFakerGenerator(models);
+function generatePrismaFaker(models, mapper = []) {
+    const generator = new PrismaFakerGenerator(models, mapper);
     return generator.generate();
 }
 exports.generatePrismaFaker = generatePrismaFaker;
