@@ -4,6 +4,7 @@ import { logger } from '@prisma/internals';
 import path from 'path';
 import { GENERATOR_NAME } from './constants';
 import { generatePrismaFaker } from './helpers/generatePrismaFaker';
+import { getMapperOptions } from './helpers/generatorUtils';
 
 const { version } = require('../package.json');
 
@@ -17,7 +18,7 @@ generatorHandler({
     };
   },
   onGenerate: async (options: GeneratorOptions) => {
-    const faker = generatePrismaFaker(options.dmmf.datamodel.models);
+    const faker = generatePrismaFaker(options.dmmf.datamodel.models, getMapperOptions(options.generator.config));
 
     const writeLocation = path.join(options.generator.output?.value!, 'faker.ts');
 

@@ -1,21 +1,60 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Faker Generation: fullSample 1`] = `
+exports[`Mapper should generate custom map fields 1`] = `
 "import { faker } from '@faker-js/faker';
 import * as prisma from '@prisma/client';
 import { Prisma } from '@prisma/client';
-import { Decimal } from '@prisma/client/runtime';
+
+export default class prisma_faker {
+
+  static readonly Book_faker_db = (partial_Book?: Partial<Prisma.BookCreateInput>): Prisma.BookCreateInput => ({
+    id: faker.number.int(),
+    ...partial_Book,
+  });
+
+  static readonly User_faker_db = (partial_User?: Partial<Prisma.UserCreateInput>): Prisma.UserCreateInput => ({
+    id: faker.string.uuid(),
+    ...partial_User,
+  });
+
+  static readonly db = {
+    Book: prisma_faker.Book_faker_db,
+    User: prisma_faker.User_faker_db,
+  };
+
+  static readonly Book_faker = (partial_Book?: Partial<prisma.Book>): prisma.Book => ({
+    id: faker.number.int(),
+    ...partial_Book,
+  });
+
+  static readonly User_faker = (partial_User?: Partial<prisma.User>): prisma.User => ({
+    id: faker.string.uuid(),
+    ...partial_User,
+  });
+
+  static readonly typescript = {
+    Book: prisma_faker.Book_faker,
+    User: prisma_faker.User_faker,
+  };
+
+}"
+`;
+
+exports[`Mapper should work when the mapper is missing 1`] = `
+"import { faker } from '@faker-js/faker';
+import * as prisma from '@prisma/client';
+import { Prisma } from '@prisma/client';
 
 export default class prisma_faker {
 
   static readonly User_faker_db = (partial_User?: Partial<Prisma.UserCreateInput>): Prisma.UserCreateInput => ({
-    email: faker.datatype.string(),
+    email: faker.string.sample(),
     ...partial_User,
   });
 
   static readonly Post_faker_db = (partial_Post?: Partial<Prisma.PostCreateInput>): Prisma.PostCreateInput => ({
-    updatedAt: faker.datatype.datetime(),
-    title: faker.datatype.string(),
+    updatedAt: faker.date.anytime(),
+    title: faker.string.sample(),
     ...partial_Post,
   });
 
@@ -25,20 +64,70 @@ export default class prisma_faker {
   };
 
   static readonly User_faker = (partial_User?: Partial<prisma.User>): prisma.User => ({
-    id: faker.datatype.number(),
-    createdAt: faker.datatype.datetime(),
-    email: faker.datatype.string(),
-    name: faker.datatype.string(),
+    id: faker.string.uuid(),
+    createdAt: faker.date.anytime(),
+    email: faker.string.sample(),
+    name: faker.string.sample(),
     ...partial_User,
   });
 
   static readonly Post_faker = (partial_Post?: Partial<prisma.Post>): prisma.Post => ({
-    id: faker.datatype.number(),
-    createdAt: faker.datatype.datetime(),
-    updatedAt: faker.datatype.datetime(),
+    id: faker.string.uuid(),
+    createdAt: faker.date.anytime(),
+    updatedAt: faker.date.anytime(),
     published: faker.datatype.boolean(),
-    title: faker.datatype.string(),
-    authorId: faker.datatype.number(),
+    title: faker.string.sample(),
+    authorId: faker.number.int({ max: 1000 }),
+    ...partial_Post,
+  });
+
+  static readonly typescript = {
+    User: prisma_faker.User_faker,
+    Post: prisma_faker.Post_faker,
+  };
+
+}"
+`;
+
+exports[`should work on a simple model 1`] = `
+"import { faker } from '@faker-js/faker';
+import * as prisma from '@prisma/client';
+import { Prisma } from '@prisma/client';
+
+export default class prisma_faker {
+
+  static readonly User_faker_db = (partial_User?: Partial<Prisma.UserCreateInput>): Prisma.UserCreateInput => ({
+    email: faker.string.sample(),
+    ...partial_User,
+  });
+
+  static readonly Post_faker_db = (partial_Post?: Partial<Prisma.PostCreateInput>): Prisma.PostCreateInput => ({
+    updatedAt: faker.date.anytime(),
+    title: faker.string.sample(),
+    ...partial_Post,
+  });
+
+  static readonly db = {
+    User: prisma_faker.User_faker_db,
+    Post: prisma_faker.Post_faker_db,
+  };
+
+  static readonly User_faker = (partial_User?: Partial<prisma.User>): prisma.User => ({
+    id: faker.number.int({ max: 1000 }),
+    createdAt: faker.date.anytime(),
+    email: faker.string.sample(),
+    name: faker.string.sample(),
+    hashedPassword: Buffer.from(faker.string.sample()),
+    ...partial_User,
+  });
+
+  static readonly Post_faker = (partial_Post?: Partial<prisma.Post>): prisma.Post => ({
+    id: faker.number.int({ max: 1000 }),
+    createdAt: faker.date.anytime(),
+    updatedAt: faker.date.anytime(),
+    published: faker.datatype.boolean(),
+    title: faker.string.sample(),
+    authorId: faker.number.int({ max: 1000 }),
     ...partial_Post,
   });
 
